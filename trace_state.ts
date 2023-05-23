@@ -29,7 +29,7 @@ const TRACE_VALUE_REGEX =
 /**
  * Generates an empty {@link TraceState} object.
  *
- * Mostly this can be used if your code is the originating source of a `tracestate` header. Otherwise, @link{getTraceStateFromHeader} is probably what you want.
+ * Mostly this can be used if your code is the originating source of a `tracestate` header. Otherwise, {@link getTraceStateFromHeader} is probably what you want.
  */
 export function getEmptyTraceState(): TraceState {
   return [];
@@ -59,7 +59,7 @@ export function getTraceStateValue(
 /**
  * Adds a value to the {@link TraceState}. The key and value must be valid trace key/value pairs and an error will be thrown if they are not.
  *
- * This will fallback to @link{updateTraceStateValue} if the key already exists in the {@link TraceState}.
+ * This will fallback to {@link updateTraceStateValue} if the key already exists in the {@link TraceState}.
  *
  * @param state a valid {@link TraceState}
  * @param key a valid trace key
@@ -90,7 +90,7 @@ export function addTraceStateValue(
 /**
  * Updates a value in the {@link TraceState}. The key and value must be valid trace key/value pairs and an error will be thrown if they are not.
  *
- * This will fallback to @link{addTraceStateValue} if the key does not exist in the {@link TraceState}.
+ * This will fallback to {@link addTraceStateValue} if the key does not exist in the {@link TraceState}.
  *
  * @param state a valid {@link TraceState}
  * @param key a valid trace key
