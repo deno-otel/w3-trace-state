@@ -38,7 +38,7 @@ const stateHasKey = (traceState: TraceState, key: string) =>
  */
 export const getTraceStateValue = (
   state: TraceState,
-  key: string
+  key: string,
 ): string | undefined => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   if (validKey === null) {
@@ -56,7 +56,7 @@ export const getTraceStateValue = (
 export const addTraceStateValue = (
   state: TraceState,
   key: string,
-  value: string
+  value: string,
 ): TraceState => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   const validValue = TRACE_VALUE_REGEX.test(value) ? value : null;
@@ -82,7 +82,7 @@ export const addTraceStateValue = (
 export const updateTraceStateValue = (
   state: TraceState,
   key: string,
-  value: string
+  value: string,
 ): TraceState => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   const validValue = TRACE_VALUE_REGEX.test(value) ? value : null;
@@ -108,7 +108,7 @@ export const updateTraceStateValue = (
  */
 export const deleteTraceStateValue = (
   state: TraceState,
-  key: string
+  key: string,
 ): TraceState => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   if (validKey === null) {

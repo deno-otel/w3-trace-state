@@ -1,22 +1,21 @@
 import {
-  assert,
   assertEquals,
   assertExists,
   assertNotEquals,
   assertThrows,
 } from "https://deno.land/std@0.184.0/testing/asserts.ts";
 import {
-  getEmptyTraceState,
   addTraceStateValue,
+  deleteTraceStateValue,
+  getEmptyTraceState,
+  getTraceStateFromHeader,
   getTraceStateValue,
   updateTraceStateValue,
-  deleteTraceStateValue,
-  getTraceStateFromHeader,
 } from "./trace_state.ts";
 
 const getByKey = (
   arr: ReadonlyArray<{ key: string; value: string }>,
-  key: string
+  key: string,
 ) => arr.find((kv) => kv.key === key)?.value;
 
 Deno.test("getEmptyTraceState", () => {
@@ -60,11 +59,11 @@ Deno.test("addTraceStateValue", async (test) => {
 
     assertEquals(
       0,
-      secondUpdate.findIndex((kv) => kv.key === "key2")
+      secondUpdate.findIndex((kv) => kv.key === "key2"),
     );
     assertEquals(
       1,
-      secondUpdate.findIndex((kv) => kv.key === "key")
+      secondUpdate.findIndex((kv) => kv.key === "key"),
     );
   });
 
@@ -80,14 +79,14 @@ Deno.test("addTraceStateValue", async (test) => {
 Deno.test("updateTraceStateValue", async (test) => {
   await test.step("generates a new state object", () => {
     const traceState = getEmptyTraceState();
-    const added = addTraceStateValue(traceState, "key", "value");
+    addTraceStateValue(traceState, "key", "value");
     const updated = updateTraceStateValue(traceState, "key", "value2");
     assertNotEquals(traceState, updated);
   });
 
   await test.step("adds a value", () => {
     const traceState = getEmptyTraceState();
-    const added = addTraceStateValue(traceState, "key", "value");
+    addTraceStateValue(traceState, "key", "value");
     const updated = updateTraceStateValue(traceState, "key", "value2");
     assertEquals("value2", getByKey(updated, "key"));
   });
@@ -116,21 +115,21 @@ Deno.test("updateTraceStateValue", async (test) => {
 
     assertEquals(
       0,
-      secondUpdate.findIndex((kv) => kv.key === "key2")
+      secondUpdate.findIndex((kv) => kv.key === "key2"),
     );
     assertEquals(
       1,
-      secondUpdate.findIndex((kv) => kv.key === "key")
+      secondUpdate.findIndex((kv) => kv.key === "key"),
     );
 
     const thirdUpdate = updateTraceStateValue(secondUpdate, "key", "value3");
     assertEquals(
       0,
-      thirdUpdate.findIndex((kv) => kv.key === "key")
+      thirdUpdate.findIndex((kv) => kv.key === "key"),
     );
     assertEquals(
       1,
-      thirdUpdate.findIndex((kv) => kv.key === "key2")
+      thirdUpdate.findIndex((kv) => kv.key === "key2"),
     );
   });
 });
