@@ -1,3 +1,6 @@
+/**
+ * This type should be treated as if it is opaque and should only be interacted with via the functions in this module.
+ */
 export type TraceState = ReadonlyArray<{ key: string; value: string }>;
 
 /*
@@ -24,9 +27,9 @@ const TRACE_VALUE_REGEX =
   /^[\x20\x21-\x2b\x2d-\x3c\x3e-\x7e]{0,255}[\x21-\x2b\x2d-\x3c\x3e-\x7e]$/;
 
 /**
- * Generates an empty trace state object.
+ * Generates an empty @link{TraceState} object.
  *
- * Mostly this can be used if your code is the originating source of a trace state header. Otherwise, @link{getTraceStateFromHeader} is probably what you want.
+ * Mostly this can be used if your code is the originating source of a `tracestate` header. Otherwise, @link{getTraceStateFromHeader} is probably what you want.
  */
 export const getEmptyTraceState = (): TraceState => [];
 
@@ -34,11 +37,14 @@ const stateHasKey = (traceState: TraceState, key: string) =>
   traceState.some((kv) => kv.key === key);
 
 /**
- * Extract a value from the trace state. The key must be a valid trace key and an error will be thrown if it is not
+ * Extract a value from the @link{TraceState}. The key must be a valid trace key and an error will be thrown if it is not
+ * @param state a valid @link{TraceState}
+ * @param key a valid trace key
+ * @returns the value associated with the key, or undefined if the key does not exist in the @link{TraceState}
  */
 export const getTraceStateValue = (
   state: TraceState,
-  key: string,
+  key: string
 ): string | undefined => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   if (validKey === null) {
@@ -49,14 +55,19 @@ export const getTraceStateValue = (
 };
 
 /**
- * Adds a value to the trace state. The key and value must be valid trace key/value pairs and an error will be thrown if they are not.
+ * Adds a value to the @link{TraceState}. The key and value must be valid trace key/value pairs and an error will be thrown if they are not.
  *
- * This will fallback to @link{updateTraceStateValue} if the key already exists in the trace state.
+ * This will fallback to @link{updateTraceStateValue} if the key already exists in the @link{TraceState}.
+ *
+ * @param state a valid @link{TraceState}
+ * @param key a valid trace key
+ * @param value a valid trace value
+ * @returns a new @link{TraceState} with the new key/value pair added
  */
 export const addTraceStateValue = (
   state: TraceState,
   key: string,
-  value: string,
+  value: string
 ): TraceState => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   const validValue = TRACE_VALUE_REGEX.test(value) ? value : null;
@@ -75,14 +86,19 @@ export const addTraceStateValue = (
 };
 
 /**
- * Updates a value in the trace state. The key and value must be valid trace key/value pairs and an error will be thrown if they are not.
+ * Updates a value in the @link{TraceState}. The key and value must be valid trace key/value pairs and an error will be thrown if they are not.
  *
- * This will fallback to @link{addTraceStateValue} if the key does not exist in the trace state.
+ * This will fallback to @link{addTraceStateValue} if the key does not exist in the @link{TraceState}.
+ *
+ * @param state a valid @link{TraceState}
+ * @param key a valid trace key
+ * @param value a valid trace value
+ * @returns a new @link{TraceState} with the updated value
  */
 export const updateTraceStateValue = (
   state: TraceState,
   key: string,
-  value: string,
+  value: string
 ): TraceState => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   const validValue = TRACE_VALUE_REGEX.test(value) ? value : null;
@@ -104,11 +120,15 @@ export const updateTraceStateValue = (
 };
 
 /**
- * Removes a key from the trace state. The key must be a valid trace key and an error will be thrown if it is not
+ * Removes a key from the @link{TraceState}. The key must be a valid trace key and an error will be thrown if it is not
+ *
+ * @param state a valid @link{TraceState}
+ * @param key a valid trace key
+ * @returns a new @link{TraceState} with the key removed
  */
 export const deleteTraceStateValue = (
   state: TraceState,
-  key: string,
+  key: string
 ): TraceState => {
   const validKey = TRACE_KEY_REGEX.test(key) ? key : null;
   if (validKey === null) {
@@ -119,7 +139,11 @@ export const deleteTraceStateValue = (
 };
 
 /**
- * Converts an appropriately formatted trace state header into a trace state object.
+ * Converts an appropriately formatted @link{TraceState} header into a @link{TraceState} object.
+ *
+ * @param header a string that conforms to the W3 specification of a `tracestate` header
+ * @returns a valid @link{TraceState}
+ *
  */
 export const getTraceStateFromHeader = (header: string): TraceState => {
   const state = header
@@ -133,7 +157,10 @@ export const getTraceStateFromHeader = (header: string): TraceState => {
 };
 
 /**
- * Generates an appropriately formatted trace state header from a trace state object.
+ * Generates an appropriately formatted @link{TraceState} header from a @link{TraceState} object.
+ *
+ * @param state a valid @link{TraceState}
+ * @returns a string that conforms to the W3 specification of a `tracestate` header
  */
 export const getHeaderFromTraceState: (state: TraceState) => string = (state) =>
   state.map((kv) => `${kv.key}=${kv.value}`).join(",");
