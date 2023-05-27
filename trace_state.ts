@@ -165,5 +165,8 @@ export function getTraceStateFromHeader(header: string): TraceState {
  * @returns a string that conforms to the W3 specification of a `tracestate` header
  */
 export function getHeaderFromTraceState(state: TraceState) {
+  if (state.length === 0) {
+    return "";
+  }
   return state.map((kv) => `${kv.key}=${kv.value}`).join(",");
 }
